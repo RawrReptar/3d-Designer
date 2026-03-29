@@ -24,7 +24,7 @@ SPECS = {
     },
     'tool': {
         'max_length': 100,
-        'min_length': 55,
+        'min_length': 35,     # compact coin/wedge tools can be shorter
         'max_width': 22,
         'min_width': 10,
         'max_faces_warn': 200_000,
@@ -60,7 +60,7 @@ def validate_stl(filepath, product_type='marker', verbose=True):
     dx = x_max - x_min
     dy = y_max - y_min
     dz = z_max - z_min
-    longest = max(dx, dy)
+    longest = max(dx, dy, dz) if product_type == 'tool' else max(dx, dy)
 
     # --- Face count ---
     n_faces = len(m.data)

@@ -1,0 +1,126 @@
+{
+  "markers": [
+    {
+      "type": "marker",
+      "silhouette": "pennant",
+      "texture": "micro_stipple",
+      "thickness": "thick",
+      "alignment": "center_line",
+      "back": "concentric_back",
+      "size": "small",
+      "special": "exposed_gyroid",
+      "score": 100.0,
+      "name": "pennant_micro_stipple_thick_small_exposed_gyroid"
+    },
+    {
+      "type": "marker",
+      "silhouette": "hourglass",
+      "texture": "smooth",
+      "thickness": "medium",
+      "alignment": "center_line",
+      "back": "concentric_back",
+      "size": "small",
+      "special": "fidget_channel",
+      "score": 100,
+      "name": "hourglass_smooth_medium_small_fidget_channel"
+    },
+    {
+      "type": "marker",
+      "silhouette": "sundial",
+      "texture": "micro_stipple",
+      "thickness": "medium",
+      "alignment": "center_line",
+      "back": "brand_zone",
+      "size": "small",
+      "special": "fidget_channel",
+      "score": 100,
+      "name": "sundial_micro_stipple_medium_small_fidget_channel"
+    },
+    {
+      "type": "marker",
+      "silhouette": "stopwatch",
+      "texture": "micro_stipple",
+      "thickness": "thick",
+      "alignment": "arrow_line",
+      "back": "mirror_texture",
+      "size": "small",
+      "special": "fidget_channel",
+      "score": 98.8,
+      "name": "stopwatch_micro_stipple_thick_small_fidget_channel"
+    },
+    {
+      "type": "marker",
+      "silhouette": "divot_star",
+      "texture": "micro_stipple",
+      "thickness": "thick",
+      "alignment": "arrow_line",
+      "back": "mirror_texture",
+      "size": "small",
+      "special": "exposed_gyroid",
+      "score": 98.1,
+      "name": "divot_star_micro_stipple_thick_small_exposed_gyroid"
+    }
+  ],
+  "tools": [
+    {
+      "type": "tool",
+      "form_factor": "classic",
+      "handle_shape": "kidney",
+      "prong_style": "tapered",
+      "texture": "finger_scallop",
+      "length": "compact",
+      "connection": "top_magnet",
+      "special": "exposed_lattice",
+      "score": 94.1,
+      "name": "classic_kidney_tapered_finger_scallop_compact_exposed_lattice"
+    },
+    {
+      "type": "tool",
+      "form_factor": "wedge",
+      "handle_shape": "kidney",
+      "prong_style": "tapered",
+      "texture": "finger_scallop",
+      "length": "compact",
+      "connection": "top_magnet",
+      "special": "exposed_lattice",
+      "score": 92.5,
+      "name": "wedge_kidney_tapered_finger_scallop_compact_exposed_lattice"
+    },
+    {
+      "type": "tool",
+      "form_factor": "pennant",
+      "handle_shape": "kidney",
+      "prong_style": "tapered",
+      "texture": "finger_scallop",
+      "length": "compact",
+      "connection": "top_magnet",
+      "special": "exposed_lattice",
+      "score": 89.7,
+      "name": "pennant_kidney_tapered_finger_scallop_compact_exposed_lattice"
+    },
+    {
+      "type": "tool",
+      "form_factor": "tshape",
+      "handle_shape": "kidney",
+      "prong_style": "tapered",
+      "texture": "finger_scallop",
+      "length": "compact",
+      "connection": "top_magnet",
+      "special": "exposed_lattice",
+      "score": 88.9,
+      "name": "tshape_kidney_tapered_finger_scallop_compact_exposed_lattice"
+    },
+    {
+      "type": "tool",
+      "form_factor": "coin",
+      "handle_shape": "kidney",
+      "prong_style": "tapered",
+      "texture": "finger_scallop",
+      "length": "compact",
+      "connection": "top_magnet",
+      "special": "exposed_lattice",
+      "score": 87.1,
+      "name": "coin_kidney_tapered_finger_scallop_compact_exposed_lattice"
+    }
+  ]
+}

@@ -248,3 +248,176 @@ def whistle_profile(body_w=28, body_h=14, mouthpiece_w=8, mouthpiece_h=6):
                     body_cy + r * math.sin(angle)])
 
     return pts
+
+
+def sundial_profile(diameter=30, gnomon_w=4, gnomon_h=10):
+    """
+    Sundial silhouette — circular base with a triangular gnomon (shadow-caster)
+    rising from the top. Ancient timekeeper = pace of play theme.
+    """
+    pts = []
+    r = diameter / 2
+    segments = 48
+
+    # Circle from right side going counter-clockwise, skipping where gnomon goes
+    gnomon_half_angle = math.asin(min(gnomon_w / 2 / r, 1.0))
+
+    for i in range(segments):
+        angle = -math.pi / 2 + 2 * math.pi * i / segments
+        # Skip the gnomon zone at the top (angle near pi/2)
+        if math.pi / 2 - gnomon_half_angle < angle < math.pi / 2 + gnomon_half_angle:
+            continue
+        pts.append([r * math.cos(angle), r * math.sin(angle)])
+
+    # Insert gnomon triangle at the top
+    gw = gnomon_w / 2
+    g_base_y = math.sqrt(max(r**2 - gw**2, 0))
+    pts_with_gnomon = []
+    inserted = False
+    for p in pts:
+        if not inserted and p[1] > g_base_y * 0.9 and p[0] > 0:
+            # Insert gnomon before this point
+            pts_with_gnomon.append([gw, g_base_y])
+            pts_with_gnomon.append([gw * 0.3, r + gnomon_h * 0.8])
+            pts_with_gnomon.append([0, r + gnomon_h])
+            pts_with_gnomon.append([-gw * 0.3, r + gnomon_h * 0.8])
+            pts_with_gnomon.append([-gw, g_base_y])
+            inserted = True
+        pts_with_gnomon.append(p)
+
+    if not inserted:
+        # Fallback: append gnomon at end
+        pts_with_gnomon.append([gw, g_base_y])
+        pts_with_gnomon.append([gw * 0.3, r + gnomon_h * 0.8])
+        pts_with_gnomon.append([0, r + gnomon_h])
+        pts_with_gnomon.append([-gw * 0.3, r + gnomon_h * 0.8])
+        pts_with_gnomon.append([-gw, g_base_y])
+
+    return pts_with_gnomon
+
+
+def stopwatch_profile(diameter=28, crown_w=6, crown_h=5, button_w=3, button_h=3.5):
+    """
+    Stopwatch silhouette — circular face with crown at top and side pusher button.
+    Marshal's timing tool — pace of play.
+    """
+    pts = []
+    r = diameter / 2
+    segments = 64
+
+    # Crown angular zone at top (angle pi/2)
+    crown_half = math.asin(min(crown_w / 2 / r, 1.0))
+    # Button angular zone at 2 o'clock (angle ~pi/6)
+    button_angle = math.pi / 6
+    button_half = math.asin(min(button_w / 2 / r, 1.0))
+
+    for i in range(segments):
+        angle = 2 * math.pi * i / segments
+
+        # Skip crown zone
+        if abs(angle - math.pi / 2) < crown_half:
+            continue
+        # Skip button zone
+        if abs(angle - button_angle) < button_half:
+            continue
+
+        pts.append([r * math.cos(angle), r * math.sin(angle)])
+
+    # Now insert crown and button features
+    cw = crown_w / 2
+    crown_base_y = math.sqrt(max(r**2 - cw**2, 0))
+    bw = button_w / 2
+    btn_base_x = r * math.cos(button_angle)
+    btn_base_y = r * math.sin(button_angle)
+    btn_nx = math.cos(button_angle)
+    btn_ny = math.sin(button_angle)
+
+    result = []
+    crown_done = False
+    button_done = False
+
+    for idx, p in enumerate(pts):
+        angle = math.atan2(p[1], p[0])
+        if angle < 0:
+            angle += 2 * math.pi
+
+        # Insert button around pi/6
+        if not button_done and angle > button_angle + button_half:
+            bx1 = r * math.cos(button_angle - button_half)
+            by1 = r * math.sin(button_angle - button_half)
+            bx2 = r * math.cos(button_angle + button_half)
+            by2 = r * math.sin(button_angle + button_half)
+            result.append([bx1, by1])
+            result.append([bx1 + button_h * btn_nx, by1 + button_h * btn_ny])
+            result.append([bx2 + button_h * btn_nx, by2 + button_h * btn_ny])
+            result.append([bx2, by2])
+            button_done = True
+
+        # Insert crown around pi/2
+        if not crown_done and angle > math.pi / 2 + crown_half:
+            result.append([cw, crown_base_y])
+            result.append([cw, crown_base_y + crown_h * 0.7])
+            result.append([cw * 0.5, crown_base_y + crown_h])
+            result.append([-cw * 0.5, crown_base_y + crown_h])
+            result.append([-cw, crown_base_y + crown_h * 0.7])
+            result.append([-cw, crown_base_y])
+            crown_done = True
+
+        result.append(p)
+
+    return result
+
+
+def divot_star_profile(radius=15, points_count=6, inner_ratio=0.55):
+    """
+    Divot repair starburst — the pattern left when you properly repair a ball mark.
+    Communicates course etiquette and care.
+    """
+    pts = []
+    inner_r = radius * inner_ratio
+    total_pts = points_count * 2
+    segments_per_arm = 3
+
+    for i in range(total_pts):
+        angle = 2 * math.pi * i / total_pts - math.pi / 2
+        next_angle = 2 * math.pi * ((i + 1) % total_pts) / total_pts - math.pi / 2
+        r_curr = radius if i % 2 == 0 else inner_r
+        r_next = inner_r if i % 2 == 0 else radius
+
+        for j in range(segments_per_arm):
+            t = j / segments_per_arm
+            a = angle + t * (next_angle - angle)
+            cr = r_curr + t * (r_next - r_curr)
+            pts.append([cr * math.cos(a), cr * math.sin(a)])
+
+    return pts
+
+
+def kidney_profile(width=16, height=12, indent=0.3, segments=32):
+    """
+    Kidney bean cross-section — ergonomic grip shape for tool handles.
+    """
+    pts = []
+    hw = width / 2
+    hh = height / 2
+
+    for i in range(segments):
+        angle = 2 * math.pi * i / segments
+        x = hw * math.cos(angle)
+        y = hh * math.sin(angle)
+        if math.cos(angle) > 0:
+            indent_amount = indent * hw * math.sin(angle) ** 2
+            x -= indent_amount
+        pts.append([x, y])
+
+    return pts
+
+
+def coin_disc_profile(diameter=38, edge_segments=64):
+    """Thick coin disc for coin-form divot tools."""
+    pts = []
+    r = diameter / 2
+    for i in range(edge_segments):
+        angle = 2 * math.pi * i / edge_segments
+        pts.append([r * math.cos(angle), r * math.sin(angle)])
+    return pts

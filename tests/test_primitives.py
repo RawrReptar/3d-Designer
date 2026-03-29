@@ -11,7 +11,10 @@ from src.profiles import (
     pennant_profile, hourglass_profile, wave_profile
 )
 from src.features import magnet_well, alignment_groove, prong_pair
-from src.products import marker_pennant, marker_hourglass, marker_disc, tool_classic
+from src.products import (
+    marker_pennant, marker_hourglass, marker_sundial, marker_stopwatch,
+    marker_divot_star, tool_classic, tool_wedge, tool_pennant, tool_tshape, tool_coin
+)
 
 
 def test_cyl_face_count():
@@ -102,22 +105,53 @@ def test_marker_hourglass_dimensions():
     assert max(dx, dy) <= 40
 
 
-def test_marker_disc_diameter():
-    m = marker_disc(diameter=30)
+def test_marker_sundial():
+    m = marker_sundial()
     x = m.vectors[:, :, 0]
     y = m.vectors[:, :, 1]
-    dx = x.max() - x.min()
-    dy = y.max() - y.min()
-    assert abs(dx - 30) < 1.0, f"Disc diameter off: {dx:.1f}mm"
-    assert abs(dy - 30) < 1.0, f"Disc diameter off: {dy:.1f}mm"
+    assert max(x.max() - x.min(), y.max() - y.min()) <= 40
+
+
+def test_marker_stopwatch():
+    m = marker_stopwatch()
+    x = m.vectors[:, :, 0]
+    y = m.vectors[:, :, 1]
+    assert max(x.max() - x.min(), y.max() - y.min()) <= 40
+
+
+def test_marker_divot_star():
+    m = marker_divot_star()
+    x = m.vectors[:, :, 0]
+    y = m.vectors[:, :, 1]
+    assert max(x.max() - x.min(), y.max() - y.min()) <= 40
 
 
 def test_tool_classic_length():
-    m = tool_classic(total_length=75)
+    m = tool_classic(total_length=62)
     z = m.vectors[:, :, 2]
     dz = z.max() - z.min()
-    assert dz >= 55, f"Tool too short: {dz:.1f}mm"
+    assert dz >= 35, f"Tool too short: {dz:.1f}mm"
     assert dz <= 110, f"Tool too long: {dz:.1f}mm"
+
+
+def test_tool_wedge():
+    m = tool_wedge()
+    assert len(m.data) > 0
+
+
+def test_tool_pennant():
+    m = tool_pennant()
+    assert len(m.data) > 0
+
+
+def test_tool_tshape():
+    m = tool_tshape()
+    assert len(m.data) > 0
+
+
+def test_tool_coin():
+    m = tool_coin()
+    assert len(m.data) > 0
 
 
 if __name__ == '__main__':
